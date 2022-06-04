@@ -1,9 +1,13 @@
 import CartIcon from '../Cart/CartIcon';
 import styles from './HeaderCartButton.module.scss';
 
-const HeaderCartButton = () => {
+interface IHeaderCartButtonProps {
+  onClick: () => void;
+}
+
+const HeaderCartButton = ({ onClick }: IHeaderCartButtonProps) => {
   return (
-    <button className={styles.button}>
+    <button className={styles.button} onClick={onClick}>
       <span className={styles.icon}>
         <CartIcon />
       </span>
