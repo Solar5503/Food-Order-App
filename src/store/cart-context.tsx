@@ -1,9 +1,17 @@
 import React from 'react';
+import { ICart } from '../types/types';
 
-const CartContext = React.createContext({
+interface IContextProps {
+  items: ICart[];
+  totalAmount: number;
+  addItem: (item: ICart) => void;
+  removeItem: (id: string) => void;
+}
+
+const CartContext = React.createContext<IContextProps>({
   items: [],
   totalAmount: 0,
-  addItem: (item: any) => {},
+  addItem: (item: ICart) => {},
   removeItem: (id: string) => {},
 });
 

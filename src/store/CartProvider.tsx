@@ -1,16 +1,26 @@
 import React, { useReducer } from 'react';
+import { ICart } from '../types/types';
 import CartContext from './cart-context';
 
 interface ICartProviderProps {
   children: React.ReactNode;
 }
 
-const defaultCartState = {
+type ICartAction =
+  | { type: 'ADD'; item: ICart }
+  | { type: 'REMOVE'; id: string };
+
+interface ICartState {
+  items: ICart[];
+  totalAmount: number;
+}
+
+const defaultCartState: ICartState = {
   items: [],
   totalAmount: 0,
 };
 
-const cartReducer = (state: any, action: any) => {
+const cartReducer = (state: ICartState, action: ICartAction) => {
   if (action.type === 'ADD') {
     const updatedItems = state.items.concat(action.item);
     const updatedTotalAmount =
@@ -26,7 +36,7 @@ const cartReducer = (state: any, action: any) => {
 const CartProvider = ({ children }: ICartProviderProps) => {
   const [cartState, dispatchCart] = useReducer(cartReducer, defaultCartState);
 
-  const addItemToCartHandler = (item: any) => {
+  const addItemToCartHandler = (item: ICart) => {
     dispatchCart({ type: 'ADD', item: item });
   };
 
