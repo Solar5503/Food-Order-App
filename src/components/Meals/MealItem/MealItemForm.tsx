@@ -23,7 +23,7 @@ const MealItemForm = ({ id, onAddToCart }: IMealItemForm) => {
     ) {
       setAmountIsValid(false);
       return;
-    }
+    } else setAmountIsValid(true);
 
     onAddToCart(enteredAmountNumber);
   };
