@@ -10,13 +10,13 @@ interface ICartProps {
 }
 
 const Cart = ({ onHideCart }: ICartProps) => {
-  const { items, totalAmount } = useContext(CartContext);
+  const { items, totalAmount, addItem, removeItem } = useContext(CartContext);
 
   const totalAmountView: string = `$${totalAmount.toFixed(2)}`;
   const hasItems: boolean = items.length > 0;
 
-  const cartItemRemoveHandler = (id: string) => {};
-  const cartItemAddHandler = (item: ICart) => {};
+  const cartItemRemoveHandler = (id: string) => removeItem(id);
+  const cartItemAddHandler = (item: ICart) => addItem({ ...item, amount: 1 });
 
   const cartItems = (
     <ul className={styles['cart-items']}>
