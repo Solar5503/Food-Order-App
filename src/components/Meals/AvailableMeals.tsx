@@ -6,12 +6,18 @@ import MealItem from './MealItem/MealItem';
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState<IMeals[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const fetchMeals = async () => {
       const res = await fetch(
         `https://reactmeals-6dbef-default-rtdb.firebaseio.com/meals.json`
       );
+      if (!res.ok) {
+        throw new Error('💥Something went wrong!💥');
+      }
+
       const responseData = await res.json();
       const loadedMeals: IMeals[] = [];
 
@@ -25,19 +31,37 @@ const AvailableMeals = () => {
       }
 
       setMeals(loadedMeals);
+      setIsLoading(false);
     };
 
-    fetchMeals();
+    fetchMeals().catch((err: any) => {
+      setIsLoading(false);
+      setError(err.message);
+    });
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className={styles.MealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={styles.MealsError}>
+        <p>{error}</p>
+      </section>
+    );
+  }
 
   const mealList: JSX.Element[] = meals.map((meal) => (
     <MealItem key={meal.id} meal={meal} />
   ));
   return (
     <section className={styles.meals}>
-      <Card>
-        <ul>{mealList}</ul>
-      </Card>
+      <Card>{mealList}</Card>
     </section>
   );
 };
