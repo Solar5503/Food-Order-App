@@ -10,3 +10,10 @@ export interface ICart {
   amount: number;
   price: number;
 }
+
+export interface IUserData {
+  name: string;
+  street: string;
+  city: string;
+  postalCode: number;
+}

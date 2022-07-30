@@ -8,7 +8,8 @@ interface ICartProviderProps {
 
 type ICartAction =
   | { type: 'ADD'; item: ICart }
-  | { type: 'REMOVE'; id: string };
+  | { type: 'REMOVE'; id: string }
+  | { type: 'CLEAR' };
 
 interface ICartState {
   items: ICart[];
@@ -72,6 +73,8 @@ const cartReducer = (state: ICartState, action: ICartAction) => {
     };
   }
 
+  if (action.type === 'CLEAR') return defaultCartState;
+
   return defaultCartState;
 };
 
@@ -85,12 +88,16 @@ const CartProvider = ({ children }: ICartProviderProps) => {
   const removeItemFromCartHandler = (id: string) => {
     dispatchCart({ type: 'REMOVE', id: id });
   };
+  const clearCartHandler = () => {
+    dispatchCart({ type: 'CLEAR' });
+  };
 
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler,
   };
   return (
     <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
